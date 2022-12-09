@@ -1,0 +1,15 @@
+{
+    "cSpell.words": [
+        "cedula",
+        "codigo",
+        "descripcion",
+        "dias",
+        "duracion",
+        "inscripcion",
+        "Inscripcion",
+        "practicapython",
+        "pymysql",
+        "telefono"
+    ],
+    "python.linting.mypyEnabled": false
+}
