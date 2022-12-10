@@ -68,7 +68,7 @@ function getUniqueData(id, model, callback) {
             callback(response);
         },
         error: function (response) {
-            alert('No se pudo eliminar el registro');
+            alert('Registro no encontrado');
         }
     });
 }
@@ -108,7 +108,7 @@ function deleteData(formId, id, model, callback) {
             });
         },
         error: function (response) {
-            alert('Registro no encontrado')
+            alert('No se pudo eliminar el registro');
         }
     });
 }
