@@ -7,8 +7,8 @@ class GrupoModel:
     __numero_grupo: int
     __cantidad_estudiantes: int
 
-    def __init__(self, numero_grupo_grupo, cantidad_estudiantes, codigo=None):
-        self.__numero_grupo = numero_grupo_grupo
+    def __init__(self, numero_grupo, cantidad_estudiantes, codigo=None):
+        self.__numero_grupo = numero_grupo
         self.__cantidad_estudiantes = cantidad_estudiantes
         self.__codigo = codigo
 
@@ -20,7 +20,7 @@ class GrupoModel:
     @classmethod
     def find_one(cls, codigo):
         query = "SELECT * FROM grupos WHERE codigo={0}"
-        grupo = db_connection.execute(query, codigo)
+        grupo = db_connection.execute(query, [codigo])
         return cls(**grupo[0]) if grupo else None
 
     def save(self):

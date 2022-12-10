@@ -20,7 +20,7 @@ class MateriaModel:
     @classmethod
     def find_one(cls, codigo):
         query = "SELECT * FROM materias WHERE codigo={0}"
-        materia = db_connection.execute(query, codigo)
+        materia = db_connection.execute(query, [codigo])
         return cls(**materia[0]) if materia else None
 
     def save(self):

@@ -1,10 +1,9 @@
-import json
 from starlette.requests import Request
-from starlette.responses import JSONResponse, Response
+from starlette.responses import HTMLResponse, Response, JSONResponse
 from starlette.endpoints import HTTPEndpoint
 
 from model.aula_model import AulaModel
-
+from env import response_type
 
 class AulaController(HTTPEndpoint):
 
@@ -14,10 +13,12 @@ class AulaController(HTTPEndpoint):
             aula = AulaModel.find_one(id)
             if aula is None:
                 return Response(status_code=404)
-            response = aula.to_dict()
-        else:
-            response = AulaModel.find()
-        return JSONResponse(response)
+            return JSONResponse(aula.to_dict())
+        
+        response = AulaModel.find()
+        if response_type == 'json':
+            return JSONResponse(response)
+        return HTMLResponse(AulaController.to_html(response)) if response else Response(status_code=404)
 
     async def post(self, request: Request):
         body = await request.json()
@@ -45,3 +46,15 @@ class AulaController(HTTPEndpoint):
                 return Response(status_code=200)
             return Response(status_code=404)
         return Response(status_code=400)
+
+    @staticmethod
+    def to_html(rows):
+        table = ''
+        for row in rows:
+            table += f'<tr><td></td> \
+            <td class="text-sm-left text-center">{row["codigo"]}</td> \
+            <td class="text-sm-left text-center">{row["numero"]}</td> \
+            <td class="text-sm-left text-center">{row["bloque"]}</td> \
+            <td class="text-left">{row["descripcion"]}</td> \
+            <td></td></tr>'
+        return table

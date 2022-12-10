@@ -1,9 +1,9 @@
-import json
 from starlette.requests import Request
-from starlette.responses import JSONResponse, Response
+from starlette.responses import HTMLResponse, Response, JSONResponse
 from starlette.endpoints import HTTPEndpoint
 
 from model.maestro_model import MaestroModel
+from env import response_type
 
 
 class MaestroController(HTTPEndpoint):
@@ -14,10 +14,12 @@ class MaestroController(HTTPEndpoint):
             maestro = MaestroModel.find_one(id)
             if maestro is None:
                 return Response(status_code=404)
-            response = maestro.to_dict()
-        else:
-            response = MaestroModel.find()
-        return JSONResponse(response)
+            return JSONResponse(maestro.to_dict())
+        
+        response = MaestroModel.find()
+        if response_type == 'json':
+            return JSONResponse(response)
+        return HTMLResponse(MaestroController.to_html(response)) if response else Response(status_code=404)
     
     async def post(self, request: Request):
         body = await request.json()
@@ -45,3 +47,16 @@ class MaestroController(HTTPEndpoint):
                 return Response(status_code=200)
             return Response(status_code=404)
         return Response(status_code=400)
+
+    @staticmethod
+    def to_html(rows):
+        table = ''
+        for row in rows:
+            table += f'<tr> \
+            <td class="text-left">CC-{row["cedula"]}</td> \
+            <td class="text-left">{row["nombre"]}</td> \
+            <td class="text-left">{row["apellido"]}</td> \
+            <td class="text-left">{row["correo"]}</td> \
+            <td class="text-left">{row["telefono"]}</td> \
+            </tr>'
+        return table

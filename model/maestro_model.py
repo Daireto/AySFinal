@@ -24,12 +24,12 @@ class MaestroModel:
     @classmethod
     def find_one(cls, cedula):
         query = "SELECT * FROM maestros WHERE cedula={0}"
-        maestro = db_connection.execute(query, cedula)
+        maestro = db_connection.execute(query, [cedula])
         return cls(**maestro[0]) if maestro else None
 
     def save(self):
-        query = "INSERT INTO maestros VALUES (NOT NULL, '{0}', '{1}', '{2}', '{3}')"
-        values = [self.__nombre, self.__apellido, self.__correo, self.__telefono]
+        query = "INSERT INTO maestros VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')"
+        values = [self.__cedula, self.__nombre, self.__apellido, self.__correo, self.__telefono]
         return db_connection.execute(query, values)
 
     def update(self, nombre, apellido, correo, telefono):

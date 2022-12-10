@@ -1,0 +1,34 @@
+<div class="row mb-3">
+    <div class="col">
+        <h1 class="h1 text-center">Lista de inscripciones</h1>
+    </div>
+</div>
+<table class="table table-hover">
+    <colgroup>
+        <col span="1" style="width: 20%" />
+        <col span="1" style="width: 20%" />
+        <col span="1" style="width: 20%" />
+        <col span="1" style="width: 20%" />
+        <col span="1" style="width: 20%" />
+    </colgroup>
+    <thead>
+        <th></th>
+        <th scope="col" class="text-center">Código de inscripción</th>
+        <th scope="col" class="text-center">Código de grupo</th>
+        <th scope="col" class="text-center">Código de evento</th>
+        <th></th>
+    </thead>
+    <tbody id="lista-inscripciones"></tbody>
+</table>
+
+<script>
+    $(document).ready(() => {
+        getData('inscripciones', response => {
+            const defaultContent = '<tr><td></td><td colspan="3" class="text-sm-left text-center">'
+                + 'No hay registros en la base de datos'
+                + '</td><td></td></tr>';
+            const content = response == '' ? defaultContent : response;
+            $('#lista-inscripciones').html(content);
+        });
+    });
+</script>

@@ -1,9 +1,9 @@
-import json
 from starlette.requests import Request
-from starlette.responses import JSONResponse, Response
+from starlette.responses import HTMLResponse, Response, JSONResponse
 from starlette.endpoints import HTTPEndpoint
 
 from model.inscripcion_model import InscripcionModel
+from env import response_type
 
 
 class InscripcionController(HTTPEndpoint):
@@ -14,10 +14,12 @@ class InscripcionController(HTTPEndpoint):
             inscripcion = InscripcionModel.find_one(id)
             if inscripcion is None:
                 return Response(status_code=404)
-            response = inscripcion.to_dict()
-        else:
-            response = InscripcionModel.find()
-        return JSONResponse(response)
+            return JSONResponse(inscripcion.to_dict())
+        
+        response = InscripcionModel.find()
+        if response_type == 'json':
+            return JSONResponse(response)
+        return HTMLResponse(InscripcionController.to_html(response)) if response else Response(status_code=404)
     
     async def post(self, request: Request):
         body = await request.json()
@@ -45,3 +47,14 @@ class InscripcionController(HTTPEndpoint):
                 return Response(status_code=200)
             return Response(status_code=404)
         return Response(status_code=400)
+
+    @staticmethod
+    def to_html(rows):
+        table = ''
+        for row in rows:
+            table += f'<tr><td></td> \
+            <td class="text-sm-left text-center">IN-{row["codigo"]}</td> \
+            <td class="text-sm-left text-center">G-{row["codigo_grupo"]}</td> \
+            <td class="text-sm-left text-center">E-{row["codigo_evento"]}</td> \
+            <td></td></tr>'
+        return table

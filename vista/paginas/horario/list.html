@@ -1,0 +1,29 @@
+<div class="row mb-3">
+    <div class="col">
+        <h1 class="h1 text-center">Lista de horarios</h1>
+    </div>
+</div>
+<table class="table table-hover">
+    <thead>
+        <th scope="col" class="text-center">Código de Horario</th>
+        <th scope="col" class="text-center">Código de Aula</th>
+        <th scope="col" class="text-center">Código de Materia</th>
+        <th scope="col" class="text-center">Código de Grupo</th>
+        <th scope="col" class="text-center">Cédula de Maestro</th>
+        <th scope="col" class="text-center">Días</th>
+        <th scope="col" class="text-center">Hora</th>
+    </thead>
+    <tbody id="lista-horarios"></tbody>
+</table>
+
+<script>
+    $(document).ready(() => {
+        getData('horarios', response => {
+            const defaultContent = '<tr><td colspan="7" class="text-sm-left text-center">'
+                + 'No hay registros en la base de datos'
+                + '</td></tr>';
+            const content = response == '' ? defaultContent : response;
+            $('#lista-horarios').html(content);
+        });
+    });
+</script>

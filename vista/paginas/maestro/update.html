@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col">
+        <h1 class="h1 text-center mb-3">Actualizar maestro</h1>
+    </div>
+</div>
+<div class="px-5">
+    <div class="row">
+        <div class="col-4 offset-4 d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="cedula" class="form-label">Cédula de maestro</label>
+                    <input type="text" class="form-control" id="cedula" />
+                </div>
+                <div class="form-buttons mb-3">
+                    <button type="button" class="btn btn-success" id="buscar">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style="height: 1px; background-color: rgb(212, 212, 212)" />
+</div>
+<form id="actualizar_maestro" class="px-5">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" />
+                </div>
+            </div>
+        </div>
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="correo" class="form-label">Correo</label>
+                    <input type="email" class="form-control" id="correo" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="text" class="form-control" id="telefono" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-buttons mb-3">
+                <button type="button" class="btn btn-success" onclick="updateForm('actualizar_maestro', $('#cedula').val(), 'maestros', response => response.status == 200 ? alert('Registro actualizado correctamente') : alert('No se pudo actualizar el registro'))">Actualizar</button>
+                <a class="btn btn-secondary" href="index.html">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(() => {
+        $('#buscar').click(() => {
+            getUniqueData($('#cedula').val(), 'maestros', response => {
+                $('#actualizar_maestro .form-control').each(function () {
+                    if (response) $(this).val(response[$(this).attr('id')]);
+                    else if ($(this).attr('id') != 'cedula') $(this).val('');
+                });
+            });
+        })
+    });
+</script>

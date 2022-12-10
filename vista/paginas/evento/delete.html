@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col">
+        <h1 class="h1 text-center mb-3">Eliminar evento</h1>
+    </div>
+</div>
+<form id="eliminar_evento" class="px-5">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="codigo" class="form-label">Código de evento</label>
+                    <input type="text" class="form-control" id="codigo" />
+                </div>
+            </div>
+        </div>
+        <div class="col d-flex flex-column justify-content-end">
+            <div class="form-buttons mb-3">
+                <button type="button" class="btn btn-danger"
+                    onclick="deleteData('eliminar_evento', $('#codigo').val(), 'eventos', response => response.status == 200 ? alert('Registro eliminado correctamente') : alert('Registro no encontrado'))">Eliminar</button>
+                <a class="btn btn-secondary" href="index.html">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>

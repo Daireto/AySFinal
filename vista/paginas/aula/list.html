@@ -1,0 +1,36 @@
+<div class="row mb-3">
+    <div class="col">
+        <h1 class="h1 text-center">Lista de aulas</h1>
+    </div>
+</div>
+<table class="table table-hover">
+    <colgroup>
+        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 10%;">
+    </colgroup>
+    <thead>
+        <th></th>
+        <th scope="col" class="text-center">Código de Aula</th>
+        <th scope="col" class="text-center">Número</th>
+        <th scope="col" class="text-center">Bloque</th>
+        <th scope="col" class="text-left">Descripción</th>
+        <th></th>
+    </thead>
+    <tbody id="lista-aulas"></tbody>
+</table>
+
+<script>
+    $(document).ready(() => {
+        getData('aulas', response => {
+            const defaultContent = '<tr><td></td><td colspan="4" class="text-sm-left text-center">'
+                + 'No hay registros en la base de datos'
+                + '</td><td></td></tr>';
+            const content = response == '' ? defaultContent : response;
+            $('#lista-aulas').html(content);
+        });
+    });
+</script>

@@ -1,0 +1,34 @@
+<div class="row mb-3">
+    <div class="col">
+        <h1 class="h1 text-center">Lista de maestros</h1>
+    </div>
+</div>
+<table class="table table-hover">
+    <colgroup>
+        <col span="1" style="width: 15%" />
+        <col span="1" style="width: 20%" />
+        <col span="1" style="width: 20%" />
+        <col span="1" style="width: 30%" />
+        <col span="1" style="width: 15%" />
+    </colgroup>
+    <thead>
+        <th scope="col" class="text-left">Cédula</th>
+        <th scope="col" class="text-left">Nombre</th>
+        <th scope="col" class="text-left">Apellido</th>
+        <th scope="col" class="text-left">Correo</th>
+        <th scope="col" class="text-left">Teléfono</th>
+    </thead>
+    <tbody id="lista-maestros"></tbody>
+</table>
+
+<script>
+    $(document).ready(() => {
+        getData('maestros', response => {
+            const defaultContent = '<tr><td colspan="5" class="text-sm-left text-center">'
+                + 'No hay registros en la base de datos'
+                + '</td></tr>';
+            const content = response == '' ? defaultContent : response;
+            $('#lista-maestros').html(content);
+        });
+    });
+</script>

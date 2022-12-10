@@ -1,6 +1,8 @@
 import uvicorn
 from starlette.applications import Starlette
 from starlette.routing import Route
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 
 from model.connection_model import db_connection
 from controller.aula_controller import AulaController
@@ -19,12 +21,10 @@ def startup():
         user="root",
         passwd=""
     )
-    print('Base de datos conectada')
 
 
 def shutdown():
     db_connection.close()
-    print('Aplicación cerrada')
 
 
 routes = [
@@ -50,7 +50,13 @@ routes = [
     Route('/materias/{id:int}', MateriaController)
 ]
 
-app = Starlette(debug=True, routes=routes, on_startup=[startup], on_shutdown=[shutdown])
+
+middleware = [
+    Middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['DELETE', 'GET', 'POST', 'PUT'])
+]
+
+
+app = Starlette(debug=True, routes=routes, middleware=middleware, on_startup=[startup], on_shutdown=[shutdown])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=5000, reload=True)

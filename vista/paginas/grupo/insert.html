@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col">
+        <h1 class="h1 text-center mb-3">Insertar grupo</h1>
+    </div>
+</div>
+<form id="insertar_grupo" class="px-5">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="numero_grupo" class="form-label">Número de grupo</label>
+                    <input type="text" class="form-control" id="numero_grupo" />
+                </div>
+            </div>
+        </div>
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="cantidad_estudiantes" class="form-label">Cantidad de estudiantes</label>
+                    <input type="text" class="form-control" id="cantidad_estudiantes" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-buttons mb-3">
+                <button type="button" class="btn btn-success"
+                    onclick="createForm('insertar_grupo', 'grupos', response => response.status == 201 ? alert('Registro guardado correctamente') : alert('No se pudo crear el registro'))">Insertar</button>
+                <a class="btn btn-secondary" href="index.html">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>

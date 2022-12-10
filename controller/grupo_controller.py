@@ -1,9 +1,9 @@
-import json
 from starlette.requests import Request
-from starlette.responses import JSONResponse, Response
+from starlette.responses import HTMLResponse, Response, JSONResponse
 from starlette.endpoints import HTTPEndpoint
 
 from model.grupo_model import GrupoModel
+from env import response_type
 
 
 class GrupoController(HTTPEndpoint):
@@ -14,10 +14,12 @@ class GrupoController(HTTPEndpoint):
             grupo = GrupoModel.find_one(id)
             if grupo is None:
                 return Response(status_code=404)
-            response = grupo.to_dict()
-        else:
-            response = GrupoModel.find()
-        return JSONResponse(response)
+            return JSONResponse(grupo.to_dict())
+        
+        response = GrupoModel.find()
+        if response_type == 'json':
+            return JSONResponse(response)
+        return HTMLResponse(GrupoController.to_html(response)) if response else Response(status_code=404)
     
     async def post(self, request: Request):
         body = await request.json()
@@ -45,3 +47,14 @@ class GrupoController(HTTPEndpoint):
                 return Response(status_code=200)
             return Response(status_code=404)
         return Response(status_code=400)
+
+    @staticmethod
+    def to_html(rows):
+        table = ''
+        for row in rows:
+            table += f'<tr><td></td> \
+            <td class="text-sm-left text-center">G-{row["codigo"]}</td> \
+            <td class="text-sm-left text-center">{row["numero_grupo"]}</td> \
+            <td class="text-sm-left text-center">{row["cantidad_estudiantes"]}</td> \
+            <td></td></tr>'
+        return table

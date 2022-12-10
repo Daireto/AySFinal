@@ -1,9 +1,9 @@
-import json
 from starlette.requests import Request
-from starlette.responses import JSONResponse, Response
+from starlette.responses import HTMLResponse, Response, JSONResponse
 from starlette.endpoints import HTTPEndpoint
 
 from model.evento_model import EventoModel
+from env import response_type
 
 
 class EventoController(HTTPEndpoint):
@@ -14,10 +14,12 @@ class EventoController(HTTPEndpoint):
             evento = EventoModel.find_one(id)
             if evento is None:
                 return Response(status_code=404)
-            response = evento.to_dict()
-        else:
-            response = EventoModel.find()
-        return JSONResponse(response)
+            return JSONResponse(evento.to_dict())
+        
+        response = EventoModel.find()
+        if response_type == 'json':
+            return JSONResponse(response)
+        return HTMLResponse(EventoController.to_html(response)) if response else Response(status_code=404)
 
     async def post(self, request: Request):
         body = await request.json()
@@ -45,3 +47,15 @@ class EventoController(HTTPEndpoint):
                 return Response(status_code=200)
             return Response(status_code=404)
         return Response(status_code=400)
+
+    @staticmethod
+    def to_html(rows):
+        table = ''
+        for row in rows:
+            table += f'<tr><td></td> \
+            <td class="text-sm-left text-center">E-{row["codigo"]}</td> \
+            <td class="text-sm-left text-center">{row["fecha"]}</td> \
+            <td class="text-sm-left text-center">{row["duracion"]} horas</td> \
+            <td class="text-left">{row["objetivo"]}</td> \
+            <td></td></tr>'
+        return table

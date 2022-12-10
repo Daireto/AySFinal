@@ -22,7 +22,7 @@ class AulaModel:
     @classmethod
     def find_one(cls, codigo):
         query = "SELECT * FROM aulas WHERE codigo={0}"
-        aula = db_connection.execute(query, codigo)
+        aula = db_connection.execute(query, [codigo])
         return cls(**aula[0]) if aula else None
 
     def save(self):

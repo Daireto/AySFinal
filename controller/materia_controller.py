@@ -1,9 +1,9 @@
-import json
 from starlette.requests import Request
-from starlette.responses import JSONResponse, Response
+from starlette.responses import HTMLResponse, Response, JSONResponse
 from starlette.endpoints import HTTPEndpoint
 
 from model.materia_model import MateriaModel
+from env import response_type
 
 
 class MateriaController(HTTPEndpoint):
@@ -14,10 +14,12 @@ class MateriaController(HTTPEndpoint):
             materia = MateriaModel.find_one(id)
             if materia is None:
                 return Response(status_code=404)
-            response = materia.to_dict()
-        else:
-            response = MateriaModel.find()
-        return JSONResponse(response)
+            return JSONResponse(materia.to_dict())
+        
+        response = MateriaModel.find()
+        if response_type == 'json':
+            return JSONResponse(response)
+        return HTMLResponse(MateriaController.to_html(response)) if response else Response(status_code=404)
     
     async def post(self, request: Request):
         body = await request.json()
@@ -45,3 +47,14 @@ class MateriaController(HTTPEndpoint):
                 return Response(status_code=200)
             return Response(status_code=404)
         return Response(status_code=400)
+
+    @staticmethod
+    def to_html(rows):
+        table = ''
+        for row in rows:
+            table += f'<tr><td></td> \
+            <td class="text-sm-left text-center">M-{row["codigo"]}</td> \
+            <td class="text-left">{row["nombre"]}</td> \
+            <td class="text-sm-left text-center">{row["duracion"]} horas</td> \
+            <td></td></tr>'
+        return table

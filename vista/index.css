@@ -1,0 +1,21 @@
+.app-brand {
+    font-size: 24px;
+}
+
+#layout-menu {
+    width: 280px !important;
+}
+
+#content {
+    background-color: rgb(226, 226, 226);
+}
+
+.footer {
+    background-color: #696cff;
+    color: white;
+}
+
+.table{
+    table-layout: fixed;
+    width: 100%;
+}

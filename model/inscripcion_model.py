@@ -20,7 +20,7 @@ class InscripcionModel:
     @classmethod
     def find_one(cls, codigo):
         query = "SELECT * FROM inscripciones WHERE codigo={0}"
-        inscripcion = db_connection.execute(query, codigo)
+        inscripcion = db_connection.execute(query, [codigo])
         return cls(**inscripcion[0]) if inscripcion else None
 
     def save(self):

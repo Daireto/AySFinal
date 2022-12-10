@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col">
+        <h1 class="h1 text-center mb-3">Actualizar inscripción</h1>
+    </div>
+</div>
+<div class="px-5">
+    <div class="row">
+        <div class="col-4 offset-4 d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="codigo" class="form-label">Código de inscripción</label>
+                    <input type="text" class="form-control" id="codigo" />
+                </div>
+                <div class="form-buttons mb-3">
+                    <button type="button" class="btn btn-success" id="buscar">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style="height: 1px; background-color: rgb(212, 212, 212)" />
+</div>
+<form id="actualizar_inscripcion" class="px-5">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="codigo_grupo" class="form-label">Código de grupo</label>
+                    <input type="text" class="form-control" id="codigo_grupo" />
+                </div>
+            </div>
+        </div>
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-fields">
+                <div class="form-group mb-3">
+                    <label for="codigo_evento" class="form-label">Código de evento</label>
+                    <input type="text" class="form-control" id="codigo_evento" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-between">
+            <div class="form-buttons mb-3">
+                <button type="button" class="btn btn-success" onclick="updateForm('actualizar_inscripcion', $('#codigo').val(), 'inscripciones', response => response.status == 200 ? alert('Registro actualizado correctamente') : alert('No se pudo actualizar el registro'))">Actualizar</button>
+                <a class="btn btn-secondary" href="index.html">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(() => {
+        $('#buscar').click(() => {
+            getUniqueData($('#codigo').val(), 'inscripciones', response => {
+                $('#actualizar_inscripcion .form-control').each(function () {
+                    if (response) $(this).val(response[$(this).attr('id')]);
+                    else if ($(this).attr('id') != 'codigo') $(this).val('');
+                });
+            });
+        })
+    });
+</script>

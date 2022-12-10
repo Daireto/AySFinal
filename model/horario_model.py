@@ -28,7 +28,7 @@ class HorarioModel:
     @classmethod
     def find_one(cls, codigo):
         query = "SELECT * FROM horarios WHERE codigo={0}"
-        horario = db_connection.execute(query, codigo)
+        horario = db_connection.execute(query, [codigo])
         return cls(**horario[0]) if horario else None
 
     def save(self):
