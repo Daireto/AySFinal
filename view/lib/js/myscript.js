@@ -26,7 +26,7 @@ function createForm(formId, model, callback) {
             });
         },
         error: function (response) {
-            alert('No se pudo crear el registro')
+            alert('No se pudo crear el registro');
         }
     });
 }
@@ -40,7 +40,21 @@ function getData(model, callback) {
             callback(response);
         },
         error: function (response) {
-            alert('Registros no encontrados')
+            callback(response);
+        }
+    });
+}
+
+function getRelatedDataList(model, callback) {
+    $.ajax({
+        type: 'GET',
+        url: `http://localhost:5000/${model}/list_related_data`,
+        data: {},
+        success: function (response) {
+            callback(response);
+        },
+        error: function (response) {
+            callback(response);
         }
     });
 }
@@ -54,7 +68,7 @@ function getUniqueData(id, model, callback) {
             callback(response);
         },
         error: function (response) {
-            alert('Registro no encontrado')
+            alert('No se pudo eliminar el registro');
         }
     });
 }
@@ -76,7 +90,7 @@ function updateForm(formId, id, model, callback) {
             });
         },
         error: function (response) {
-            alert('No se pudo actualizar el registro')
+            alert('No se pudo actualizar el registro');
         }
     });
 }

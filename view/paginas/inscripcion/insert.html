@@ -9,7 +9,7 @@
             <div class="form-fields">
                 <div class="form-group mb-3">
                     <label for="codigo_grupo" class="form-label">Código de grupo</label>
-                    <input type="text" class="form-control" id="codigo_grupo" />
+                    <select class="form-control" id="codigo_grupo"></select>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
             <div class="form-fields">
                 <div class="form-group mb-3">
                     <label for="codigo_evento" class="form-label">Código de evento</label>
-                    <input type="text" class="form-control" id="codigo_evento" />
+                    <select class="form-control" id="codigo_evento"></select>
                 </div>
             </div>
         </div>
@@ -32,3 +32,31 @@
         </div>
     </div>
 </form>
+
+<script>
+    $(document).ready(() => {
+        $("#codigo_evento").empty();
+        $("#codigo_grupo").empty();
+
+        let eventos = {'Seleccione un evento': undefined};
+        let grupos = {'Seleccione un grupo': undefined};
+
+        getRelatedDataList('inscripciones', response => {
+            response.eventos.forEach(evento => {
+                eventos[evento.objetivo] = evento.codigo;
+            });
+            response.grupos.forEach(grupo => {
+                grupos[`G-${grupo.numero_grupo}, ${grupo.cantidad_estudiantes} estudiantes`] = grupo.codigo;
+            });
+
+            $.each(eventos, (key, value) => {
+                $("#codigo_evento").append($("<option></option>")
+                    .attr("value", value).text(key));
+            });
+            $.each(grupos, (key, value) => {
+                $("#codigo_grupo").append($("<option></option>")
+                    .attr("value", value).text(key));
+            });
+        });
+    });
+</script>

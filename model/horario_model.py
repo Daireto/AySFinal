@@ -22,7 +22,11 @@ class HorarioModel:
 
     @staticmethod
     def find():
-        query = "SELECT * FROM horarios"
+        query = "SELECT * FROM horarios \
+            INNER JOIN aulas ON horarios.codigo_aula = aulas.codigo \
+            INNER JOIN materias ON horarios.codigo_materia = materias.codigo \
+            INNER JOIN maestros ON horarios.cedula_maestro = maestros.cedula \
+            INNER JOIN grupos ON horarios.codigo_grupo = grupos.codigo"
         return db_connection.execute(query)
 
     @classmethod

@@ -37,9 +37,8 @@ class ConnectionModel(metaclass=SingletonMeta):
                 self.__db.commit()
                 return result if result else None
         except Exception as e:
-            print("Ha ocurrido un error: {}".format(e))
             self.__db.rollback()
-            return None
+            raise e
     
     def close(self):
         self.__db.close()

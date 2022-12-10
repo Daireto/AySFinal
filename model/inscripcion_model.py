@@ -14,7 +14,9 @@ class InscripcionModel:
 
     @staticmethod
     def find():
-        query = "SELECT * FROM inscripciones"
+        query = "SELECT * FROM inscripciones \
+            INNER JOIN grupos ON inscripciones.codigo_grupo = grupos.codigo \
+            INNER JOIN eventos ON inscripciones.codigo_evento = eventos.codigo"
         return db_connection.execute(query)
 
     @classmethod

@@ -24,24 +24,24 @@
         <div class="col d-flex flex-column justify-content-between">
             <div class="form-fields">
                 <div class="form-group mb-3">
-                    <label for="codigo_aula" class="form-label">Código de aula</label>
-                    <input type="text" class="form-control" id="codigo_aula" />
+                    <label for="codigo_aula" class="form-label">Aula</label>
+                    <select class="form-control" id="codigo_aula"></select>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="codigo_materia" class="form-label">Código de materia</label>
-                    <input type="text" class="form-control" id="codigo_materia" />
+                    <label for="codigo_materia" class="form-label">Materia</label>
+                    <select class="form-control" id="codigo_materia"></select>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="cedula_maestro" class="form-label">Cédula de maestro</label>
-                    <input type="text" class="form-control" id="cedula_maestro" />
+                    <label for="cedula_maestro" class="form-label">Maestro</label>
+                    <select class="form-control" id="cedula_maestro"></select>
                 </div>
             </div>
         </div>
         <div class="col d-flex flex-column justify-content-between">
             <div class="form-fields">
                 <div class="form-group mb-3">
-                    <label for="codigo_grupo" class="form-label">Código de grupo</label>
-                    <input type="text" class="form-control" id="codigo_grupo" />
+                    <label for="codigo_grupo" class="form-label">Grupo</label>
+                    <select class="form-control" id="codigo_grupo"></select>
                 </div>
                 <div class="form-group mb-3">
                     <label for="dias" class="form-label">Días</label>
@@ -68,11 +68,58 @@
     $(document).ready(() => {
         $('#buscar').click(() => {
             getUniqueData($('#codigo').val(), 'horarios', response => {
+                $("#codigo_aula").empty();
+                $("#codigo_materia").empty();
+                $("#cedula_maestro").empty();
+                $("#codigo_grupo").empty();
+
+                let aulas = {};
+                let materias = {};
+                let maestros = {};
+                let grupos = {};
+
+                getRelatedDataList('horarios', related_data_response => {
+                    related_data_response.aulas.forEach(aula => {
+                        aulas[`${aula.bloque}-${aula.numero}, ${aula.descripcion}`] = aula.codigo;
+                    });
+                    related_data_response.materias.forEach(materia => {
+                        materias[materia.nombre] = materia.codigo;
+                    });
+                    related_data_response.maestros.forEach(maestro => {
+                        maestros[maestro.correo] = maestro.cedula;
+                    });
+                    related_data_response.grupos.forEach(grupo => {
+                        grupos[`G-${grupo.numero_grupo}, ${grupo.cantidad_estudiantes} estudiantes`] = grupo.codigo;
+                    });
+
+                    $.each(aulas, (key, value) => {
+                        $("#codigo_aula").append($("<option></option>")
+                            .attr("value", value).text(key));
+                    });
+                    $.each(materias, (key, value) => {
+                        $("#codigo_materia").append($("<option></option>")
+                            .attr("value", value).text(key));
+                    });
+                    $.each(maestros, (key, value) => {
+                        $("#cedula_maestro").append($("<option></option>")
+                            .attr("value", value).text(key));
+                    });
+                    $.each(grupos, (key, value) => {
+                        $("#codigo_grupo").append($("<option></option>")
+                            .attr("value", value).text(key));
+                    });
+                    
+                    $(`#codigo_aula option[value=${response["codigo_aula"]}]`).attr("selected", "selected");
+                    $(`#codigo_materia option[value=${response["codigo_materia"]}]`).attr("selected", "selected");
+                    $(`#cedula_maestro option[value=${response["cedula_maestro"]}]`).attr("selected", "selected");
+                    $(`#codigo_grupo option[value=${response["codigo_grupo"]}]`).attr("selected", "selected");
+                });
+
                 $('#actualizar_horario .form-control').each(function () {
                     if (response) $(this).val(response[$(this).attr('id')]);
                     else if ($(this).attr('id') != 'codigo') $(this).val('');
                 });
             });
-        })
+        });
     });
 </script>

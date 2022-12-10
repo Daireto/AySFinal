@@ -25,7 +25,7 @@
             <div class="form-fields">
                 <div class="form-group mb-3">
                     <label for="codigo_grupo" class="form-label">Código de grupo</label>
-                    <input type="text" class="form-control" id="codigo_grupo" />
+                    <select class="form-control" id="codigo_grupo"></select>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
             <div class="form-fields">
                 <div class="form-group mb-3">
                     <label for="codigo_evento" class="form-label">Código de evento</label>
-                    <input type="text" class="form-control" id="codigo_evento" />
+                    <select class="form-control" id="codigo_evento"></select>
                 </div>
             </div>
         </div>
@@ -52,6 +52,33 @@
     $(document).ready(() => {
         $('#buscar').click(() => {
             getUniqueData($('#codigo').val(), 'inscripciones', response => {
+                $("#codigo_evento").empty();
+                $("#codigo_grupo").empty();
+
+                let eventos = {};
+                let grupos = {};
+
+                getRelatedDataList('inscripciones', related_data_response => {
+                    related_data_response.eventos.forEach(evento => {
+                        eventos[evento.objetivo] = evento.codigo;
+                    });
+                    related_data_response.grupos.forEach(grupo => {
+                        grupos[`G-${grupo.numero_grupo}, ${grupo.cantidad_estudiantes} estudiantes`] = grupo.codigo;
+                    });
+
+                    $.each(eventos, (key, value) => {
+                        $("#codigo_evento").append($("<option></option>")
+                            .attr("value", value).text(key));
+                    });
+                    $.each(grupos, (key, value) => {
+                        $("#codigo_grupo").append($("<option></option>")
+                            .attr("value", value).text(key));
+                    });
+
+                    $(`#codigo_evento option[value=${response["codigo_evento"]}]`).attr("selected", "selected");
+                    $(`#codigo_grupo option[value=${response["codigo_grupo"]}]`).attr("selected", "selected");
+                });
+
                 $('#actualizar_inscripcion .form-control').each(function () {
                     if (response) $(this).val(response[$(this).attr('id')]);
                     else if ($(this).attr('id') != 'codigo') $(this).val('');

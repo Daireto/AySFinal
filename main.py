@@ -39,9 +39,11 @@ routes = [
 
     Route('/horarios', HorarioController),
     Route('/horarios/{id:int}', HorarioController),
+    Route('/horarios/list_related_data', HorarioController.get_related_data_list),
 
     Route('/inscripciones', InscripcionController),
     Route('/inscripciones/{id:int}', InscripcionController),
+    Route('/inscripciones/list_related_data', InscripcionController.get_related_data_list),
 
     Route('/maestros', MaestroController),
     Route('/maestros/{id:int}', MaestroController),

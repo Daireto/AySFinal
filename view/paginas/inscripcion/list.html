@@ -10,13 +10,15 @@
         <col span="1" style="width: 20%" />
         <col span="1" style="width: 20%" />
         <col span="1" style="width: 20%" />
+        <col span="2" style="width: 20%" />
     </colgroup>
     <thead>
-        <th></th>
-        <th scope="col" class="text-center">Código de inscripción</th>
-        <th scope="col" class="text-center">Código de grupo</th>
-        <th scope="col" class="text-center">Código de evento</th>
-        <th></th>
+        <th scope="col" class="text-center">Inscripción</th>
+        <th scope="col" class="text-center">Grupo</th>
+        <th scope="col" class="text-center">Cantidad de estudiantes</th>
+        <th scope="col" class="text-center">Fecha del evento</th>
+        <th scope="col" class="text-center">Duración del evento</th>
+        <th scope="col" colspan="2" class="text-center">Objetivo del evento</th>
     </thead>
     <tbody id="lista-inscripciones"></tbody>
 </table>
@@ -24,7 +26,7 @@
 <script>
     $(document).ready(() => {
         getData('inscripciones', response => {
-            const defaultContent = '<tr><td></td><td colspan="3" class="text-sm-left text-center">'
+            const defaultContent = '<tr><td></td><td colspan="5" class="text-sm-left text-center">'
                 + 'No hay registros en la base de datos'
                 + '</td><td></td></tr>';
             const content = response == '' ? defaultContent : response;
